@@ -1,0 +1,6 @@
+.error-msg ul{
+    padding-inline: 5px;
+}
+.error-msg ul li{
+    list-style: none;
+}
