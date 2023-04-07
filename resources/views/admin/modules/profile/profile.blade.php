@@ -12,8 +12,8 @@
                         <div class="card-header">
                             <h3 class="card-title">Update Profile</h3>
                         </div>
-                        <form>
-                            <div class="card-body">
+                        <div class="card-body">
+                            <form>
                                 <div class="form-group">
                                     <label for="name">Name</label>
                                     <input type="name" class="form-control" value="{{ $adminData->name }}" id="name"
@@ -47,8 +47,8 @@
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary mt-2">Update Profile</button>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <div class="col-xl-6">
@@ -56,29 +56,39 @@
                         <div class="card-header">
                             <h3 class="card-title">Update Password</h3>
                         </div>
-                        <form>
-                            <div class="card-body">
+                        <div class="card-body">
+                            @if (Session::has('msg'))
+                                <div class="alert alert-{{ Session::get('cls') }} alert-dismissible fade show" role="alert">
+                                    {{ Session::get('msg') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+
+                            <form action="{{ route('admin.updatepassword') }}" method="POST">
+                                @csrf
                                 <div class="form-group">
                                     <label for="current_password">Current Password</label>
-                                    <input type="password" class="form-control" id="current_password"
-                                        placeholder="Enter Current Password">
+                                    <input type="password" class="form-control" name="current_password"
+                                        id="current_password" placeholder="Enter Current Password">
                                     <p class="mb-0 lh-1" id="current_password_msg"></p>
                                 </div>
                                 <div class="form-group">
                                     <label for="new_password">New Password</label>
-                                    <input type="password" class="form-control" id="new_password"
+                                    <input type="password" name="new_password" class="form-control" id="new_password"
                                         placeholder="Enter New Password">
                                 </div>
                                 <div class="form-group">
                                     <label for="confirm_password">Confirm Password</label>
-                                    <input type="password" class="form-control" id="confirm_password"
-                                        placeholder="Enter Confirm Password">
+                                    <input type="password" name="confirm_password" class="form-control"
+                                        id="confirm_password" placeholder="Enter Confirm Password">
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">Update Password</button>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -86,6 +96,7 @@
     </section>
     @push('js')
         <script>
+            // Current password check
             $('#current_password').keyup(function() {
                 let current_password = $(this).val();
                 if (current_password != '') {

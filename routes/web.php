@@ -43,5 +43,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
     // check password
     Route::post('check-current-password', [AdminController::class, 'check_current_password'])->name('check-current-password');
+
+    // update password
+    Route::post('update-password', [AdminController::class, 'update_password'])->name('admin.updatepassword');
+
+
 });
 require __DIR__ . '/auth.php';

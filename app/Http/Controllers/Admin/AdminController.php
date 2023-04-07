@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -78,11 +79,36 @@ class AdminController extends Controller
 
     public function check_current_password(Request $request)
     {
-        $data = $request->all();
-        if (Hash::check($data['current_password'], Auth::user()->password)){
-            return "true";
-        }else{
-            return "false";
+        if ($request->isMethod('POST')) {
+            $data = $request->all();
+            if (Hash::check($data['current_password'], Auth::user()->password)) {
+                return "true";
+            } else {
+                return "false";
+            }
+        }
+    }
+
+    public function update_password(Request $request)
+    {
+        if ($request->isMethod('POST')) {
+            $data = $request->all();
+            if (Hash::check($data['current_password'], Auth::user()->password)) {
+                if ($data['new_password'] == $data['confirm_password']) {
+                    User::where('id', Auth::id())->update(['password' => bcrypt($data['new_password'])]);
+                    session()->flash('cls', 'success');
+                    session()->flash('msg', 'Password Updated Successfully.');
+                    return redirect()->back();
+                }else{
+                    session()->flash('cls', 'danger');
+                    session()->flash('msg', 'New Password and Confirm Password are not same.');
+                    return redirect()->back();
+                }
+            } else {
+                session()->flash('cls', 'danger');
+                session()->flash('msg', 'Your Current Password is not correct');
+                return redirect()->back();
+            }
         }
     }
 }
