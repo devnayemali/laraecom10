@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -77,6 +78,39 @@ class AdminController extends Controller
         return view('admin.modules.profile.profile', compact('adminData'));
     }
 
+    public function update_profile(Request $request)
+    {
+
+        if ($request->isMethod('POST')) {
+            $this->validate($request, [
+                'name' => 'required|string|max:255',
+                'email' => ['email', 'max:255']
+            ]);
+            $data = $request->except('_token');
+            if ($request->hasFile('image')) {
+
+                $file = $request->file('image');
+                $name = Str::slug($request->input('name'));
+                $height = 300;
+                $width = 300;
+                $path = 'image/profile/';
+
+                // Image Delete
+                PhotoUploadController::imageUnlink($path, $request->image);
+
+                // crop image upload
+                $data['image'] = PhotoUploadController::imageUpload($name, $width, $height, $path, $file);
+            }
+
+            $data['id'] = Auth::id();
+
+            User::where('id', $data['id'])->update($data);
+            session()->flash('cls', 'success');
+            session()->flash('pmsg', 'Profile Updated Successfully.');
+            return redirect()->route('admin.profile');
+        }
+    }
+
     public function check_current_password(Request $request)
     {
         if ($request->isMethod('POST')) {
@@ -99,14 +133,14 @@ class AdminController extends Controller
                     session()->flash('cls', 'success');
                     session()->flash('msg', 'Password Updated Successfully.');
                     return redirect()->back();
-                }else{
+                } else {
                     session()->flash('cls', 'danger');
-                    session()->flash('msg', 'New Password and Confirm Password are not same.');
+                    session()->flash('msg', 'New Password and Confirm Password are not correct.');
                     return redirect()->back();
                 }
             } else {
                 session()->flash('cls', 'danger');
-                session()->flash('msg', 'Your Current Password is not correct');
+                session()->flash('msg', 'Your Current Password is not correct.');
                 return redirect()->back();
             }
         }

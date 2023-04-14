@@ -1,6 +1,16 @@
-.error-msg ul{
+.error-msg ul {
     padding-inline: 5px;
 }
-.error-msg ul li{
+
+.error-msg ul li {
     list-style: none;
+}
+
+.imgw-200 {
+    width: 200px;
+    height: auto;
+}
+
+.lh-1 {
+    line-height: 1;
 }
