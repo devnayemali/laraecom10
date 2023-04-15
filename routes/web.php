@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,16 +26,12 @@ Route::get('/', function(){
 // Admin Panel Route
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::get('profile', [AdminController::class, 'profile'])->name('admin.profile');
 
-    // update profile
-    Route::post('update-admin-profile', [AdminController::class, 'update_profile'])->name('admin.updateprofile');
-    // check password
-    Route::post('check-current-password', [AdminController::class, 'check_current_password'])->name('check-current-password');
-    // update password
-    Route::post('update-password', [AdminController::class, 'update_password'])->name('admin.updatepassword');
-
-
+    // Profile Route
+    Route::get('profile', [ProfileController::class, 'edit'])->name('admin.profile');
+    Route::post('profile-update', [ProfileController::class, 'update'])->name('admin.updateprofile');
+    Route::post('check-current-password', [ProfileController::class, 'check_current_password'])->name('check-current-password');
+    Route::post('update-password', [ProfileController::class, 'update_password'])->name('admin.updatepassword');
 
 
 });

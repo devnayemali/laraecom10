@@ -1,8 +1,12 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ route('admin.profile') }}" class="brand-link">
-        <img src="{{ asset('admin/img/user2-160x160.jpg') }}" alt="{{ Auth::user()?->name }}"
-            class="brand-image img-circle elevation-3">
+        <?php if (file_exists('image/profile/' . Auth::user()?->image)) { ?>
+            <img src="{{ asset('image/profile/' . Auth::user()?->image) }}" alt="{{ Auth::user()?->name }}"
+                class="brand-image img-circle elevation-3">
+        <?php } else {  ?>
+            <img src="{{ asset('admin/img/user2-160x160.jpg') }}" class="brand-image img-circle elevation-3">
+        <?php } ?>
         <span class="brand-text font-weight-light">{{ Auth::user()?->name }}</span>
     </a>
 

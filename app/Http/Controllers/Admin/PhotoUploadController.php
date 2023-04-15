@@ -21,7 +21,7 @@ class PhotoUploadController extends Controller
     // crop image upload
     public static function imageUpload(string $name, int $width, int $height, string $path, $file): string
     {
-        $image_name = $name . '.webp';
+        $image_name = $name .'-'. time() . '.webp';
         Image::make($file)->fit($width, $height)->save(public_path($path) . $image_name, 100, 'webp');
         return $image_name;
     }

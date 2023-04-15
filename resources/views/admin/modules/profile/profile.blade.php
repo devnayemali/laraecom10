@@ -41,21 +41,21 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="name">Name</label>
-                                    <input type="name" name="name" class="form-control" value="{{ $adminData->name }}" id="name"
+                                    <input type="name" name="name" class="form-control" value="{{ $profile->name }}" id="name"
                                         placeholder="Name">
                                 </div>
                                 <div class="form-group">
                                     <label for="email">Email address</label>
                                     <input type="email" name="email" class="form-control"
-                                        value="{{ $adminData->email }}" id="email" placeholder="Email">
+                                        value="{{ $profile->email }}" id="email" placeholder="Email">
                                 </div>
                                 <div class="form-group">
                                     <label for="mobile">Mobile</label>
                                     <input type="text" name="mobile" class="form-control" id="mobile"
-                                        value="{{ $adminData->mobile }}" placeholder="Mobile">
+                                        value="{{ $profile->mobile }}" placeholder="Mobile">
                                 </div>
                                 <div class="form-group">
-                                    <label for="image_input">Photo(Size : 300 x 300px)</label>
+                                    <label for="image_input">Photo(Size : 300px x 300px)</label>
                                     <div class="input-group mb-2">
                                         <div class="custom-file">
                                             <input type="file" name="image" class="custom-file-input" id="image_input">
@@ -66,8 +66,9 @@
                                         </div>
                                     </div>
                                     <img class="prifile-img mt-4 imgw-200" id="image_preview">
-                                    @if (!empty($adminData->image))
-                                        <img width="400px" src="{{ asset('image/profile/'. $adminData->image) }}" alt="{{ $adminData->name }}">
+                                    @if (!empty($profile->image))
+                                        <input type="hidden" name="old_image" value="{{ $profile->image }}">
+                                        <img width="400px" src="{{ asset('image/profile/'. $profile->image) }}" alt="{{ $profile->name }}">
                                     @endif
                                 </div>
                                 <div class="form-group">
