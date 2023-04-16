@@ -33,6 +33,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::post('check-current-password', [ProfileController::class, 'check_current_password'])->name('check-current-password');
     Route::post('update-password', [ProfileController::class, 'update_password'])->name('admin.updatepassword');
 
+    // Vendor Details
+    Route::match(['get', 'post'], 'update-vendor-details/{slug}', [ProfileController::class, 'updateVendorDetails'])->name('admin.updatevendordetails');
 
 });
 require __DIR__ . '/auth.php';

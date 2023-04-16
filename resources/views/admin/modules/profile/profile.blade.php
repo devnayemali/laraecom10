@@ -40,6 +40,11 @@
                             <form action="{{ route('admin.updateprofile') }}" enctype="multipart/form-data" method="POST">
                                 @csrf
                                 <div class="form-group">
+                                    <label for="role">User Type</label>
+                                    <input type="text" name="role" class="form-control" value="{{ $profile_role }}" id="role"
+                                        placeholder="role" readonly>
+                                </div>
+                                <div class="form-group">
                                     <label for="name">Name</label>
                                     <input type="name" name="name" class="form-control" value="{{ $profile->name }}" id="name"
                                         placeholder="Name">

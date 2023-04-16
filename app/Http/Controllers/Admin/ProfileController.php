@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Vendor;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use PhpParser\Node\Stmt\ElseIf_;
 
 class ProfileController extends Controller
 {
@@ -49,7 +51,19 @@ class ProfileController extends Controller
     public function edit()
     {
         $profile = Auth::user();
-        return view('admin.modules.profile.profile', compact('profile'));
+
+        $profile_role = null;
+        if ($profile->role == 1) {
+            $profile_role = 'Super Admin';
+        } elseif ($profile->role == 2) {
+            $profile_role = 'Admin';
+        } elseif ($profile->role == 3) {
+            $profile_role = 'Vendor';
+        } elseif ($profile->role == 4) {
+            $profile_role = 'User';
+        }
+
+        return view('admin.modules.profile.profile', compact('profile', 'profile_role'));
     }
 
     /**
@@ -62,7 +76,7 @@ class ProfileController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => ['email', 'max:255']
             ]);
-            $data = $request->except(['_token', 'old_image']);
+            $data = $request->except(['_token', 'old_image', 'role']);
             if ($request->hasFile('image')) {
                 $file = $request->file('image');
                 $name = Str::slug($request->input('name'));
@@ -128,4 +142,21 @@ class ProfileController extends Controller
         }
     }
 
+    // update vendor details
+    public function updateVendorDetails($slug, Request $request){
+        if ($slug == 'personal') {
+
+            if ($request->isMethod('POST')){
+                dd($request->all());
+            }
+
+            $vendorData = Vendor::where('id', Auth::user()->vendor_id)->first();
+        }elseif($slug == 'business') {
+
+        }elseif($slug == 'bank') {
+
+        }
+
+        return view('admin.modules.vendor.vendor', compact('slug', 'vendorData'));
+    }
 }
