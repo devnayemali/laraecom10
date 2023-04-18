@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('vendors', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id')->nullable();
             $table->string('name')->nullable();
             $table->string('address')->nullable();
             $table->string('city')->nullable();
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->string('pincode')->nullable();
             $table->string('mobile')->nullable();
             $table->string('email')->nullable();
+            $table->string('image')->nullable();
             $table->tinyInteger('status')->nullable();
             $table->timestamps();
         });

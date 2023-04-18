@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Vendor;
+use App\Models\VendorBusinessDetail;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-use PhpParser\Node\Stmt\ElseIf_;
 
 class ProfileController extends Controller
 {
@@ -48,7 +50,7 @@ class ProfileController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit(): View
     {
         $profile = Auth::user();
 
@@ -69,7 +71,7 @@ class ProfileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request): RedirectResponse
     {
         if ($request->isMethod('POST')) {
             $this->validate($request, [
@@ -85,7 +87,10 @@ class ProfileController extends Controller
                 $path = 'image/profile/';
 
                 // Image Delete
-                PhotoUploadController::imageUnlink($path, $request->old_image);
+                if (!empty($request->old_image)) {
+                    PhotoUploadController::imageUnlink($path, $request->old_image);
+                }
+
                 // crop image upload
                 $data['image'] = PhotoUploadController::imageUpload($name, $width, $height, $path, $file);
             }
@@ -143,20 +148,71 @@ class ProfileController extends Controller
     }
 
     // update vendor details
-    public function updateVendorDetails($slug, Request $request){
+    public function updateVendorDetails(String $slug, Request $request)
+    {
         if ($slug == 'personal') {
+            if ($request->isMethod('POST')) {
+                $rules = [
+                    'name' => 'required|string|max:255',
+                    'address' => 'required|string|max:255',
+                    'city' => 'required|string|max:255',
+                    'state' => 'required|string|max:255',
+                    'country' => 'required|string|max:255',
+                    'pincode' => 'required|max:255',
+                    'mobile' => 'required|max:255',
+                    'email' => 'required|email|max:255',
+                ];
 
-            if ($request->isMethod('POST')){
-                dd($request->all());
+                $messages = [
+                    'name.required' => 'Name is required',
+                    'address.required' => 'Address is required',
+                    'city.required' => 'City is required',
+                    'state.required' => 'State is required',
+                    'country.required' => 'Country is required',
+                    'pincode.required' => 'Pincode is required',
+                    'mobile.required' => 'Mobile is required',
+                    'email.required' => 'Email is required',
+                ];
+
+                $this->validate($request, $rules, $messages);
+
+                $data = $request->except(['_token', 'old_image']);
+                if ($request->hasFile('image')) {
+                    $file = $request->file('image');
+                    $name = Str::slug($request->input('name'));
+                    $height = 300;
+                    $width = 300;
+                    $path = 'image/vendor/';
+
+                    // Image Delete
+                    if (!empty($request->old_image)) {
+                        PhotoUploadController::imageUnlink($path, $request->old_image);
+                    }
+
+                    // crop image upload
+                    $data['image'] = PhotoUploadController::imageUpload($name, $width, $height, $path, $file);
+                }
+
+                $data['user_id'] = Auth::id();
+                $vendor_exit = Vendor::where('user_id', Auth::id())->first();
+                if ($vendor_exit) {
+                    $vendor_exit->update($data);
+                } else {
+                    Vendor::create($data);
+                }
+
+                session()->flash('cls', 'success');
+                session()->flash('msg', 'Vendor Details Update Successfully.');
+                return redirect()->route('admin.updatevendordetails', $slug);
             }
+            $vendorData = Vendor::where('user_id', Auth::id())->first();
+            return view('admin.modules.vendor.vendor', compact('slug', 'vendorData'));
+        } elseif ($slug == 'business') {
 
-            $vendorData = Vendor::where('id', Auth::user()->vendor_id)->first();
-        }elseif($slug == 'business') {
-
-        }elseif($slug == 'bank') {
-
+            $vendorBusinessData = VendorBusinessDetail::where('user_id', Auth::id())->first();
+            return view('admin.modules.vendor.vendor', compact('slug', 'vendorBusinessData'));
+        } elseif ($slug == 'bank') {
+            return "bangk";
         }
-
-        return view('admin.modules.vendor.vendor', compact('slug', 'vendorData'));
     }
 }

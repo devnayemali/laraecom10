@@ -7,85 +7,229 @@
     <section class="content">
         <div class="container-fluid">
             @if ($slug == 'personal')
-            <div class="row">
-                <div class="col-xl-6">
-                    <div class="card card-secondary">
-                        <div class="card-header">
-                            <h3 class="card-title">Update Details</h3>
-                        </div>
-                        <div class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-xl-8">
+                        <div class="card card-secondary">
+                            <div class="card-header">
+                                <h3 class="card-title">Update Personal Details</h3>
+                            </div>
+                            <div class="card-body">
 
-                            {{-- @if ($errors->any())
-                                <div class="error-msg alert alert-danger alert-dismissible fade show" role="alert">
-                                    <ul class="mb-0">
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif --}}
+                                @if ($errors->any())
+                                    <div class="error-msg alert alert-danger alert-dismissible fade show" role="alert">
+                                        <ul class="mb-0">
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
 
-                            {{-- @if (Session::has('pmsg'))
-                                <div class="alert alert-{{ Session::get('cls') }} alert-dismissible fade show"
-                                    role="alert">
-                                    {{ Session::get('pmsg') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif --}}
+                                @if (Session::has('msg'))
+                                    <div class="alert alert-{{ Session::get('cls') }} alert-dismissible fade show"
+                                        role="alert">
+                                        {{ Session::get('msg') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
 
-                            <form action="{{ route('admin.updatevendordetails', 'personal') }}" enctype="multipart/form-data" method="POST">
-                                @csrf
+                                {!! Form::model($vendorData, ['route' => ['admin.updatevendordetails', $slug], 'files' => true]) !!}
+
                                 <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="text" name="name" class="form-control" value="{{ $vendorData->name }}" id="name"
-                                        placeholder="Name">
+                                    {!! Form::label('name', 'Name') !!}
+                                    {!! Form::text('name', $vendorData?->name, ['class' => 'form-control', 'placeholder' => 'Enter Name']) !!}
                                 </div>
+
                                 <div class="form-group">
-                                    <label for="address">Address</label>
-                                    <input type="text" name="address" class="form-control" value="{{ $vendorData->address }}" id="address" placeholder="Address">
+                                    {!! Form::label('email', 'Email') !!}
+                                    {!! Form::email('email', $vendorData?->email, ['class' => 'form-control', 'placeholder' => 'Enter Email']) !!}
                                 </div>
+
                                 <div class="form-group">
-                                    <label for="city">City</label>
-                                    <input type="text" name="city" class="form-control" value="{{ $vendorData->city }}" id="city" placeholder="City">
+                                    {!! Form::label('mobile', 'Mobile') !!}
+                                    {!! Form::text('mobile', $vendorData?->mobile, ['class' => 'form-control', 'placeholder' => 'Enter Mobile']) !!}
                                 </div>
+
                                 <div class="form-group">
-                                    <label for="state">State</label>
-                                    <input type="text" name="state" class="form-control" value="{{ $vendorData->state }}" id="state" placeholder="State">
+                                    {!! Form::label('address', 'Address') !!}
+                                    {!! Form::text('address', $vendorData?->address, ['class' => 'form-control', 'placeholder' => 'Enter Address']) !!}
                                 </div>
+
                                 <div class="form-group">
-                                    <label for="state">Country</label>
-                                    <input type="text" name="country" class="form-control" value="{{ $vendorData->country }}" id="country" placeholder="Country">
+                                    {!! Form::label('city', 'City') !!}
+                                    {!! Form::text('city', $vendorData?->city, ['class' => 'form-control', 'placeholder' => 'Enter City']) !!}
                                 </div>
+
                                 <div class="form-group">
-                                    <label for="pincode">Pincode</label>
-                                    <input type="text" name="pincode" class="form-control" value="{{ $vendorData->pincode }}" id="pincode" placeholder="Pincode">
+                                    {!! Form::label('state', 'State') !!}
+                                    {!! Form::text('state', $vendorData?->state, ['class' => 'form-control', 'placeholder' => 'Enter State']) !!}
                                 </div>
+
                                 <div class="form-group">
-                                    <label for="mobile">Mobile</label>
-                                    <input type="text" name="mobile" class="form-control" value="{{ $vendorData->mobile }}" id="mobile" placeholder="Mobile">
+                                    {!! Form::label('country', 'Country') !!}
+                                    {!! Form::text('country', $vendorData?->country, ['class' => 'form-control', 'placeholder' => 'Enter Country']) !!}
                                 </div>
+
                                 <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="text" name="email" class="form-control" value="{{ $vendorData->email }}" id="email" placeholder="Email">
+                                    {!! Form::label('pincode', 'Pincode') !!}
+                                    {!! Form::text('pincode', $vendorData?->pincode, ['class' => 'form-control', 'placeholder' => 'Enter Pincode']) !!}
                                 </div>
+
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary mt-2">Update Profile</button>
+                                    <label for="image_input">Photo</label>
+                                    <div class="input-group mb-2">
+                                        <div class="custom-file">
+                                            <input type="file" name="image" class="custom-file-input" id="image_input">
+                                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                        </div>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Upload</span>
+                                        </div>
+                                    </div>
+                                    <img class="prifile-img mt-4 imgw-200" id="image_preview">
+                                    @if (!empty($vendorData?->image))
+                                        <input type="hidden" name="old_image" value="{{ $vendorData?->image }}">
+                                        <img width="400px" src="{{ asset('image/vendor/' . $vendorData?->image) }}"
+                                            alt="{{ $vendorData?->name }}">
+                                    @endif
                                 </div>
-                            </form>
+
+                                <div class="form-group">
+                                    {!! Form::button('Update Data', ['type' => 'submit', 'class' => 'btn btn-primary mt-2']) !!}
+                                </div>
+
+                                {!! Form::close() !!}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             @elseif($slug == 'business')
-                business
+                <div class="row justify-content-center">
+                    <div class="col-xl-8">
+                        <div class="card card-secondary">
+                            <div class="card-header">
+                                <h3 class="card-title">Update Personal Details</h3>
+                            </div>
+                            <div class="card-body">
+
+                                @if ($errors->any())
+                                    <div class="error-msg alert alert-danger alert-dismissible fade show" role="alert">
+                                        <ul class="mb-0">
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+
+                                @if (Session::has('msg'))
+                                    <div class="alert alert-{{ Session::get('cls') }} alert-dismissible fade show"
+                                        role="alert">
+                                        {{ Session::get('msg') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+
+                                {!! Form::model($vendorBusinessData, ['route' => ['admin.updatevendordetails', $slug]]) !!}
+
+                                <div class="form-group">
+                                    {!! Form::label('name', 'Name') !!}
+                                    {!! Form::text('name', $vendorBusinessData?->name, ['class' => 'form-control', 'placeholder' => 'Enter Name']) !!}
+                                </div>
+
+                                <div class="form-group">
+                                    {!! Form::label('email', 'Email') !!}
+                                    {!! Form::email('email', $vendorBusinessData?->email, [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Enter Email',
+                                    ]) !!}
+                                </div>
+
+                                <div class="form-group">
+                                    {!! Form::label('address', 'Address') !!}
+                                    {!! Form::text('address', $vendorBusinessData?->address, [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Enter Address',
+                                    ]) !!}
+                                </div>
+
+                                <div class="form-group">
+                                    {!! Form::label('city', 'City') !!}
+                                    {!! Form::text('city', $vendorBusinessData?->city, ['class' => 'form-control', 'placeholder' => 'Enter City']) !!}
+                                </div>
+
+                                <div class="form-group">
+                                    {!! Form::label('state', 'State') !!}
+                                    {!! Form::text('state', $vendorBusinessData?->state, [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Enter State',
+                                    ]) !!}
+                                </div>
+
+                                <div class="form-group">
+                                    {!! Form::label('country', 'Country') !!}
+                                    {!! Form::text('country', $vendorBusinessData?->country, [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Enter Country',
+                                    ]) !!}
+                                </div>
+
+                                <div class="form-group">
+                                    {!! Form::label('pincode', 'Pincode') !!}
+                                    {!! Form::text('pincode', $vendorBusinessData?->pincode, [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Enter Pincode',
+                                    ]) !!}
+                                </div>
+
+                                <div class="form-group">
+                                    {!! Form::label('mobile', 'Mobile') !!}
+                                    {!! Form::text('mobile', $vendorBusinessData?->mobile, [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Enter Mobile',
+                                    ]) !!}
+                                </div>
+
+                                <div class="form-group">
+                                    {!! Form::button('Update Data', ['type' => 'submit', 'class' => 'btn btn-primary mt-2']) !!}
+                                </div>
+
+                                {!! Form::close() !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             @elseif ($slug == 'bangk')
                 bank
             @endif
         </div>
     </section>
+
+    @push('js')
+        <script>
+            let image;
+            $('#image_preview').hide();
+            $('#image_input').on('change', function(e) {
+                let file = e.target.files[0];
+                let reader = new FileReader();
+                reader.onloadend = () => {
+                    image = reader.result;
+                    $('#image_preview').show();
+                    $('#image_preview').attr('src', image);
+                }
+                reader.readAsDataURL(file);
+            });
+        </script>
+    @endpush
+
 @endsection

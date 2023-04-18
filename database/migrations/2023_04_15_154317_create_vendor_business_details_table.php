@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vendors_business_details', function (Blueprint $table) {
+        Schema::create('vendor_business_details', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id')->nullable();
             $table->integer('vendor_id')->nullable();
             $table->string('shop_name')->nullable();
             $table->string('shop_address')->nullable();

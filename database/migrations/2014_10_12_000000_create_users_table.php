@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->integer('vendor_id')->nullable();
             $table->integer('role')->comment('1 = super admin, 2 = admin , 3 = vendor , 4 = users')->nullable();
             $table->string('name')->nullable();
             $table->string('mobile')->nullable();
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->tinyInteger('status')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
