@@ -209,6 +209,69 @@ class ProfileController extends Controller
             return view('admin.modules.vendor.vendor', compact('slug', 'vendorData'));
         } elseif ($slug == 'business') {
 
+            if ($request->isMethod('POST')) {
+                $rules = [
+                    'shop_name' => 'required|string|max:255',
+                    'shop_address' => 'required|string|max:255',
+                    'shop_city' => 'required|string|max:255',
+                    'shop_state' => 'required|string|max:255',
+                    'shop_country' => 'required|string|max:255',
+                    'shop_pincode' => 'required|max:255',
+                    'shop_mobile' => 'required|max:255',
+                    'shop_email' => 'required|email|max:255',
+                    'address_proof' => 'required|max:255',
+                    'business_license_number' => 'required|max:255',
+                    'gst_number' => 'required|max:255',
+                    'pan_number' => 'required|max:255',
+                ];
+
+                $messages = [
+                    'shop_name.required' => 'Shop Name is required',
+                    'shop_address.required' => 'Shop Address is required',
+                    'shop_city.required' => 'Shop City is required',
+                    'shop_state.required' => 'Shop State is required',
+                    'shop_country.required' => 'Shop Country is required',
+                    'shop_pincode.required' => 'Shop Pincode is required',
+                    'shop_mobile.required' => 'Shop Mobile is required',
+                    'shop_email.required' => 'Shop Email is required',
+                    'address_proof.required' => 'Shop Address Proof is required',
+                    'business_license_number.required' => 'Business License Number is required',
+                    'gst_number.required' => 'GST Number is required',
+                    'pan_number.required' => 'Pan Number is required',
+                ];
+
+                $this->validate($request, $rules, $messages);
+
+                $data = $request->except(['_token', 'old_image']);
+                if ($request->hasFile('address_proof_image')) {
+                    $file = $request->file('address_proof_image');
+                    $name = Str::slug($request->input('shop_name'));
+                    $path = 'image/vendor/';
+
+                    // Image Delete
+                    if (!empty($request->old_image)) {
+                        PhotoUploadController::imageUnlink($path, $request->old_image);
+                    }
+
+                    // crop image upload
+                    $data['address_proof_image'] = PhotoUploadController::orginalImageUpload($name, $path, $file);
+                }
+
+                $vendor = Vendor::where('user_id', Auth::id())->select('id')->first();
+                $data['vendor_id'] =  $vendor->id;
+                $data['user_id'] = Auth::id();
+                $vendor_business_exit = VendorBusinessDetail::where('user_id', Auth::id())->first();
+                if ($vendor_business_exit) {
+                    $vendor_business_exit->update($data);
+                } else {
+                    VendorBusinessDetail::create($data);
+                }
+
+                session()->flash('cls', 'success');
+                session()->flash('msg', 'Vendor Business Details Update Successfully.');
+                return redirect()->route('admin.updatevendordetails', $slug);
+            }
+
             $vendorBusinessData = VendorBusinessDetail::where('user_id', Auth::id())->first();
             return view('admin.modules.vendor.vendor', compact('slug', 'vendorBusinessData'));
         } elseif ($slug == 'bank') {

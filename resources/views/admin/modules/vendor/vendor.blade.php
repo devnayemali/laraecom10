@@ -113,7 +113,7 @@
                     <div class="col-xl-8">
                         <div class="card card-secondary">
                             <div class="card-header">
-                                <h3 class="card-title">Update Personal Details</h3>
+                                <h3 class="card-title">Update Business Details</h3>
                             </div>
                             <div class="card-body">
 
@@ -140,63 +140,126 @@
                                     </div>
                                 @endif
 
-                                {!! Form::model($vendorBusinessData, ['route' => ['admin.updatevendordetails', $slug]]) !!}
+                                {!! Form::model($vendorBusinessData, ['route' => ['admin.updatevendordetails', $slug], 'files' => true ]) !!}
 
                                 <div class="form-group">
-                                    {!! Form::label('name', 'Name') !!}
-                                    {!! Form::text('name', $vendorBusinessData?->name, ['class' => 'form-control', 'placeholder' => 'Enter Name']) !!}
-                                </div>
-
-                                <div class="form-group">
-                                    {!! Form::label('email', 'Email') !!}
-                                    {!! Form::email('email', $vendorBusinessData?->email, [
+                                    {!! Form::label('shop_name', 'Shop Name') !!}
+                                    {!! Form::text('shop_name', $vendorBusinessData?->shop_name, [
                                         'class' => 'form-control',
-                                        'placeholder' => 'Enter Email',
+                                        'placeholder' => 'Enter Shop Name',
                                     ]) !!}
                                 </div>
 
                                 <div class="form-group">
-                                    {!! Form::label('address', 'Address') !!}
-                                    {!! Form::text('address', $vendorBusinessData?->address, [
+                                    {!! Form::label('shop_address', 'Shop Address') !!}
+                                    {!! Form::email('shop_address', $vendorBusinessData?->shop_address, [
                                         'class' => 'form-control',
-                                        'placeholder' => 'Enter Address',
+                                        'placeholder' => 'Enter Shop Address',
                                     ]) !!}
                                 </div>
 
                                 <div class="form-group">
-                                    {!! Form::label('city', 'City') !!}
-                                    {!! Form::text('city', $vendorBusinessData?->city, ['class' => 'form-control', 'placeholder' => 'Enter City']) !!}
-                                </div>
-
-                                <div class="form-group">
-                                    {!! Form::label('state', 'State') !!}
-                                    {!! Form::text('state', $vendorBusinessData?->state, [
+                                    {!! Form::label('shop_city', 'Shop City') !!}
+                                    {!! Form::text('shop_city', $vendorBusinessData?->shop_city, [
                                         'class' => 'form-control',
-                                        'placeholder' => 'Enter State',
+                                        'placeholder' => 'Enter Shop City',
                                     ]) !!}
                                 </div>
 
                                 <div class="form-group">
-                                    {!! Form::label('country', 'Country') !!}
-                                    {!! Form::text('country', $vendorBusinessData?->country, [
+                                    {!! Form::label('shop_state', 'Shop State') !!}
+                                    {!! Form::text('shop_state', $vendorBusinessData?->shop_state, [
                                         'class' => 'form-control',
-                                        'placeholder' => 'Enter Country',
+                                        'placeholder' => 'Enter Shop State',
                                     ]) !!}
                                 </div>
 
                                 <div class="form-group">
-                                    {!! Form::label('pincode', 'Pincode') !!}
-                                    {!! Form::text('pincode', $vendorBusinessData?->pincode, [
+                                    {!! Form::label('shop_country', 'Shop Country') !!}
+                                    {!! Form::text('shop_country', $vendorBusinessData?->shop_country, [
                                         'class' => 'form-control',
-                                        'placeholder' => 'Enter Pincode',
+                                        'placeholder' => 'Enter Shop Country',
                                     ]) !!}
                                 </div>
 
                                 <div class="form-group">
-                                    {!! Form::label('mobile', 'Mobile') !!}
-                                    {!! Form::text('mobile', $vendorBusinessData?->mobile, [
+                                    {!! Form::label('shop_pincode', 'Shop Pincode') !!}
+                                    {!! Form::text('shop_pincode', $vendorBusinessData?->shop_pincode, [
                                         'class' => 'form-control',
-                                        'placeholder' => 'Enter Mobile',
+                                        'placeholder' => 'Enter Shop Pincode',
+                                    ]) !!}
+                                </div>
+
+                                <div class="form-group">
+                                    {!! Form::label('shop_mobile', 'Shop Mobile') !!}
+                                    {!! Form::text('shop_mobile', $vendorBusinessData?->shop_mobile, [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Enter Shop Mobile',
+                                    ]) !!}
+                                </div>
+
+                                <div class="form-group">
+                                    {!! Form::label('shop_email', 'Shop Email') !!}
+                                    {!! Form::text('shop_email', $vendorBusinessData?->shop_email, [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Enter Shop Email',
+                                    ]) !!}
+                                </div>
+
+                                <div class="form-group">
+                                    {!! Form::label('shop_website', 'Shop Website') !!}
+                                    {!! Form::text('shop_website', $vendorBusinessData?->shop_website, [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Enter Shop Website',
+                                    ]) !!}
+                                </div>
+
+
+                                <div class="form-group">
+                                    {!! Form::label('address_proof', 'Address Proof') !!}
+                                    {!! Form::select('address_proof', ['passport' => 'Passport', 'votingcard' => 'Voting Card', 'pan' => 'PAN', 'drivinglicene' => 'Driving Licene', 'adharcard' => 'Adhar Card'], $vendorBusinessData?->address_proof, ['placeholder' => 'Select Proof Type', 'class' => 'form-control'] ) !!}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="image_input">Address Proof Image</label>
+                                    <div class="input-group mb-2">
+                                        <div class="custom-file">
+                                            <input type="file" name="address_proof_image" class="custom-file-input" id="image_input">
+                                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                        </div>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Upload</span>
+                                        </div>
+                                    </div>
+                                    <img class="prifile-img mt-4 imgw-200" id="image_preview">
+                                    @if (!empty($vendorBusinessData?->address_proof_image))
+                                        <input type="hidden" name="old_image" value="{{ $vendorBusinessData?->address_proof_image }}">
+                                        <img width="400px" src="{{ asset('image/vendor/' . $vendorBusinessData?->address_proof_image) }}"
+                                            alt="{{ $vendorBusinessData?->address_proof_image }}">
+                                    @endif
+                                </div>
+
+                                <div class="form-group">
+                                    {!! Form::label('business_license_number', 'Business License Number') !!}
+                                    {!! Form::text('business_license_number', $vendorBusinessData?->business_license_number, [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Enter Business License Number',
+                                    ]) !!}
+                                </div>
+
+                                <div class="form-group">
+                                    {!! Form::label('gst_number', 'GST Number') !!}
+                                    {!! Form::text('gst_number', $vendorBusinessData?->gst_number, [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Enter GST Number',
+                                    ]) !!}
+                                </div>
+
+                                <div class="form-group">
+                                    {!! Form::label('pan_number', 'PAN Number') !!}
+                                    {!! Form::text('pan_number', $vendorBusinessData?->pan_number, [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Enter PAN Number',
                                     ]) !!}
                                 </div>
 
