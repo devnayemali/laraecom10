@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -12,7 +13,8 @@ class AdminController extends Controller
      */
     public function index()
     {
-        //
+        $admins = User::where('role', User::SUPERADMIN)->latest()->get();
+        return view('admin.modules.admin.admin', compact('admins'));
     }
 
     /**
@@ -60,7 +62,11 @@ class AdminController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $admin = User::findOrFail($id);
+        $admin->delete();
+        session()->flash('cls', 'error');
+        session()->flash('msg', 'User Delete Successfully');
+        return redirect()->route('admin.index');
     }
 
     public function dashboard()

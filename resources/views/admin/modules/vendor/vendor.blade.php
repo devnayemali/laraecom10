@@ -272,8 +272,81 @@
                         </div>
                     </div>
                 </div>
-            @elseif ($slug == 'bangk')
-                bank
+            @elseif ($slug == 'bank')
+            <div class="row justify-content-center">
+                <div class="col-xl-8">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title">Update Bank Details</h3>
+                        </div>
+                        <div class="card-body">
+
+                            @if ($errors->any())
+                                <div class="error-msg alert alert-danger alert-dismissible fade show" role="alert">
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+
+                            @if (Session::has('msg'))
+                                <div class="alert alert-{{ Session::get('cls') }} alert-dismissible fade show"
+                                    role="alert">
+                                    {{ Session::get('msg') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+
+                            {!! Form::model($vendorBankData, ['route' => ['admin.updatevendordetails', $slug] ]) !!}
+
+                            <div class="form-group">
+                                {!! Form::label('account_holder_name', 'Account Holder Name') !!}
+                                {!! Form::text('account_holder_name', $vendorBankData?->account_holder_name, [
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Enter account holder name',
+                                ]) !!}
+                            </div>
+
+                            <div class="form-group">
+                                {!! Form::label('bank_name', 'Bank Name') !!}
+                                {!! Form::text('bank_name', $vendorBankData?->bank_name, [
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Enter bank name',
+                                ]) !!}
+                            </div>
+
+                            <div class="form-group">
+                                {!! Form::label('account_number', 'Account Number') !!}
+                                {!! Form::text('account_number', $vendorBankData?->account_number, [
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Enter account number',
+                                ]) !!}
+                            </div>
+
+                            <div class="form-group">
+                                {!! Form::label('bank_ifsc_code', 'Bank Ifsc Code') !!}
+                                {!! Form::text('bank_ifsc_code', $vendorBankData?->bank_ifsc_code, [
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Enter bank ifsc code',
+                                ]) !!}
+                            </div>
+
+                            <div class="form-group">
+                                {!! Form::button('Update Data', ['type' => 'submit', 'class' => 'btn btn-primary mt-2']) !!}
+                            </div>
+
+                            {!! Form::close() !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
             @endif
         </div>
     </section>

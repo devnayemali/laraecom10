@@ -4,8 +4,6 @@
         <?php if (file_exists('image/profile/' . Auth::user()?->image)) { ?>
             <img src="{{ asset('image/profile/' . Auth::user()?->image) }}" alt="{{ Auth::user()?->name }}"
                 class="brand-image img-circle elevation-3">
-        <?php } else {  ?>
-            <img src="{{ asset('admin/img/user2-160x160.jpg') }}" class="brand-image img-circle elevation-3">
         <?php } ?>
         <span class="brand-text font-weight-light">{{ Auth::user()?->name }}</span>
     </a>
@@ -26,15 +24,16 @@
                         </p>
                     </a>
                 </li>
+                @if (Auth::user()->role == \App\Models\User::VENDOR)
                 <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link">
-                        <i class="nav-icon fas fa-copy"></i>
+                        <i class="fas fa-user-plus mr-2"></i>
                         <p>
                             Vendor Details
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
-                    <ul class="nav nav-treeview ml-2">
+                    <ul class="nav nav-treeview ml-3">
                         <li class="nav-item">
                             <a href="{{ route('admin.updatevendordetails', 'personal') }}" class="nav-link">
                                 <p>Personal Details</p>
@@ -52,19 +51,69 @@
                         </li>
                     </ul>
                 </li>
+                @endif
+
+
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link">
+                        <i class="far fa-user mr-2"></i>
+                        <p>
+                            Admin Management
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview ml-3">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.index') }}" class="nav-link">
+                                <p>Admin</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.updatevendordetails', 'bank') }}" class="nav-link">
+                                <p>Sub Admin</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.updatevendordetails', 'business') }}" class="nav-link">
+                                <p>Vendor</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link">
+                        <i class="far fa-user mr-2"></i>
+                        <p>
+                            User Management
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview ml-3">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.updatevendordetails', 'personal') }}" class="nav-link">
+                                <p>User</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.updatevendordetails', 'bank') }}" class="nav-link">
+                                <p>Subscriber</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
-                            Charts
+                            Admin Management
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="pages/charts/chartjs.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>ChartJS</p>
+                                <p>Admins</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -76,13 +125,13 @@
                         <li class="nav-item">
                             <a href="pages/charts/inline.html" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Inline</p>
+                                <p>Sub Admins</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="pages/charts/uplot.html" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>uPlot</p>
+                                <p>Vendor</p>
                             </a>
                         </li>
                     </ul>

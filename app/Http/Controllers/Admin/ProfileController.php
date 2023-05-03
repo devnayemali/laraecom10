@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Vendor;
+use App\Models\VendorBankDetail;
 use App\Models\VendorBusinessDetail;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -258,7 +259,7 @@ class ProfileController extends Controller
                 }
 
                 $vendor = Vendor::where('user_id', Auth::id())->select('id')->first();
-                $data['vendor_id'] =  $vendor->id;
+                $data['vendor_id'] = $vendor->id;
                 $data['user_id'] = Auth::id();
                 $vendor_business_exit = VendorBusinessDetail::where('user_id', Auth::id())->first();
                 if ($vendor_business_exit) {
@@ -275,7 +276,42 @@ class ProfileController extends Controller
             $vendorBusinessData = VendorBusinessDetail::where('user_id', Auth::id())->first();
             return view('admin.modules.vendor.vendor', compact('slug', 'vendorBusinessData'));
         } elseif ($slug == 'bank') {
-            return "bangk";
+
+            if ($request->isMethod('POST')) {
+                $rules = [
+                    'account_holder_name' => 'required|string|max:255',
+                    'bank_name' => 'required|string|max:255',
+                    'account_number' => 'required|numeric',
+                    'bank_ifsc_code' => 'required|numeric'
+                ];
+
+                $messages = [
+                    'account_holder_name.required' => 'Account Holder Name is required',
+                    'bank_name.required' => 'Bank Name is required',
+                    'account_number.required' => 'Account Number is required',
+                    'bank_ifsc_code.required' => 'Bank ifsc_code is required',
+                ];
+                $this->validate($request, $rules, $messages);
+
+                $data = $request->all();
+                $vendor = Vendor::where('user_id', Auth::id())->select('id')->first();
+                $data['user_id'] = Auth::id();
+
+                $vendor_bank_exit = VendorBankDetail::where('user_id', Auth::id())->first();
+                if ($vendor_bank_exit) {
+                    $vendor_bank_exit->update($data);
+                } else {
+                    VendorBankDetail::create($data);
+                }
+
+                session()->flash('cls', 'success');
+                session()->flash('msg', 'Vendor Bank Details Update Successfully.');
+                return redirect()->route('admin.updatevendordetails', $slug);
+
+            }
+
+            $vendorBankData = VendorBankDetail::where('user_id', Auth::id())->first();
+            return view('admin.modules.vendor.vendor', compact('slug', 'vendorBankData'));
         }
     }
 }

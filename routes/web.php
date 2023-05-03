@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ProfileController;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,8 +25,8 @@ Route::get('/', function(){
 
 
 // Admin Panel Route
-Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
-    Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
+    Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     // Profile Route
     Route::get('profile', [ProfileController::class, 'edit'])->name('admin.profile');
@@ -33,8 +34,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::post('check-current-password', [ProfileController::class, 'check_current_password'])->name('check-current-password');
     Route::post('update-password', [ProfileController::class, 'update_password'])->name('admin.updatepassword');
 
-    // Vendor Details
-    Route::match(['get', 'post'], 'update-vendor-details/{slug}', [ProfileController::class, 'updateVendorDetails'])->name('admin.updatevendordetails');
+    // Vendor Route
+    Route::middleware(['vendor'])->group(function () {
+        Route::match(['get', 'post'], 'update-vendor-details/{slug}', [ProfileController::class, 'updateVendorDetails'])->name('admin.updatevendordetails');
+    });
+
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    Route::delete('/admin/{id}', [AdminController::class, 'destroy'])->name('admin.destroy');
+
 
 });
 require __DIR__ . '/auth.php';
