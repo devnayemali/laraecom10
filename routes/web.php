@@ -41,6 +41,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
 
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
     Route::delete('/admin/{id}', [AdminController::class, 'destroy'])->name('admin.destroy');
+    Route::get('/admin-view/{id}', [AdminController::class, 'admin_view'])->name('admin.admin-view');
+    Route::post('/admin-status/{id}', [AdminController::class, 'admin_status'])->name('admin.admin-status');
 
 
 });

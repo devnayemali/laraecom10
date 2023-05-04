@@ -17,6 +17,7 @@
                                         <th>Name</th>
                                         <th>Mobile</th>
                                         <th>Email</th>
+                                        <th>Type</th>
                                         <th>Status</th>
                                         <th>Date Time</th>
                                         <th>Action</th>
@@ -26,12 +27,25 @@
                                     @foreach ($admins as $admin)
                                         <tr>
                                             <td>{{ $admin->id }}</td>
-                                            <td><a href="{{ $admin->id }}">{{ $admin->name }}</a></td>
+                                            @if ($admin->id == Auth::user()->id)
+                                                <td><a href="{{ route('admin.admin-view', $admin->id) }}">{{ $admin->name }}
+                                                        (You)
+                                                    </a></td>
+                                            @else
+                                                <td><a
+                                                        href="{{ route('admin.admin-view', $admin->id) }}">{{ $admin->name }}</a>
+                                                </td>
+                                            @endif
+
                                             <td>{{ $admin->mobile }}</td>
                                             <td>{{ $admin->email }}</td>
-                                            <td>{!! $admin->status == 1
-                                                ? '<span class="text-success">Active</span>'
-                                                : '<span class="text-danger">Inactive</span>' !!}</td>
+                                            <td>{{ $admin->role == \app\Models\User::SUPERADMIN ? 'Super Admin' : 'Admin' }}
+                                            </td>
+                                            <td>
+                                                <div class="switch-item">
+                                                    <input type="checkbox" data-status="{{ $admin->status }}" name="status" data-id="{{ $admin->id }}" id="admin_{{ $admin->id }}" class="control switch_btn" {{ $admin->status == 1 ? 'checked' : ' ' }} >
+                                                </div>
+                                            </td>
                                             <td>
                                                 <p class="mb-0">Created : {{ $admin->created_at->toDayDateTimeString() }}
                                                 </p>
@@ -41,10 +55,16 @@
                                             </td>
 
                                             <td>
-                                                <a class="mr-1 text-info" href="#"><i class="fas fa-eye"></i></a> |
-                                                <a class="mx-1 text-warning" href="#"><i class="fas fa-edit"></i></a>
-                                                |
+                                                <a class="mr-1 text-info"
+                                                    href="{{ route('admin.admin-view', $admin->id) }}"><i
+                                                        class="fas fa-eye"></i></a>
 
+
+                                                @if ($admin->id == Auth::user()->id)
+                                                    |
+                                                    <a class="mx-1 text-warning" href="{{ route('admin.profile') }}"><i
+                                                            class="fas fa-edit"></i></a>
+                                                    {{-- |
                                                 {!! Form::open([
                                                     'method' => 'delete',
                                                     'id' => 'form_' . $admin->id,
@@ -56,7 +76,8 @@
                                                     'data-id' => $admin->id,
                                                     'class' => 'delete_btn ml-1 border-0 bg-transparent',
                                                 ]) !!}
-                                                {!! Form::close() !!}
+                                                {!! Form::close() !!} --}}
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -93,7 +114,69 @@
     @endif
 
     @push('js')
+        <script src="{{ url('admin/js/axios.min.js') }}"></script>
         <script>
+            let domain = window.location.origin;
+
+            $('.switch_btn').on('click', function() {
+                let admin_id = $(this).attr('data-id');
+                let admin_status = $(this).attr('data-status');
+
+                if (admin_status == 1) {
+                    $(this).attr('data-status', 0);
+                    admin_status = 0;
+                }else{
+                   $(this).attr('data-status', 1);
+                    admin_status = 1;
+                }
+
+                axios.post(domain + '/dashboard/admin-status/' + admin_id, {
+                        status: admin_status,
+                        admin_id: admin_id
+                    })
+                    .then(function(response) {
+                        let status = response.data;
+                        if (status == 1) {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 2000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'User Approved Successfully',
+                            })
+                        }else{
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 2000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'User Unapproved Successfully',
+                            })
+                        }
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            });
+
             $('.delete_btn').on('click', function() {
                 let id = $(this).attr('data-id');
                 Swal.fire({

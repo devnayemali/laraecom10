@@ -14,3 +14,62 @@
 .lh-1 {
     line-height: 1;
 }
+
+
+.switch-item {
+    display: block;
+}
+
+.switch-item .control{
+    cursor: pointer;
+}
+
+.switch-item .control[type='checkbox'] {
+    appearance: none;
+    position: relative;
+    width: 52px;
+    height: 34px;
+    padding: 3px;
+    border-radius: 34px;
+    background-color: #aaa;
+    vertical-align: middle;
+    transition: all .3s cubic-bezier(.4, 0, .1, 1.4);
+}
+
+.switch-item .control[type='checkbox']:after {
+    content: '';
+    position: relative;
+    display: block;
+    left: 0;
+    width: 60.9%;
+    height: 100%;
+    border-radius: 28px;
+    background-color: #fff;
+    transition: left .3s cubic-bezier(0.175, 0.885, 0.32, 1.275), padding .3s ease, margin .3s ease;
+    box-sizing: content-box;
+}
+
+.switch-item .control[type='checkbox']:active:after {
+    padding-right: 8px;
+}
+
+.switch-item .control[type='checkbox']:checked {
+    background-color: royalblue;
+}
+
+.switch-item .control[type='checkbox']:checked:after {
+    left: 39.1%;
+}
+
+.switch-item .control[type='checkbox']:checked:active:after {
+    margin-left: -8px;
+}
+
+.switch-item .control[type='checkbox']:disabled {
+    opacity: .3;
+}
+
+.switch-item .control[type='checkbox']:disabled:active:after {
+    padding-right: 0;
+    margin-left: 0;
+}

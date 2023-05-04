@@ -73,4 +73,22 @@ class AdminController extends Controller
     {
         return view('admin.modules.dashboard');
     }
+
+    public function admin_view(string $id)
+    {
+        $admin = User::findOrFail($id);
+        return view('admin.modules.admin.admin-view', compact('admin'));
+    }
+
+    public function admin_status(Request $request)
+    {
+        $data = $request->all();
+        if ($data['status'] == 1) {
+            $status = 1;
+        }else{
+            $status = 0;
+        }
+        User::where('id', $data['admin_id'])->update(['status' => $status]);
+        return response()->json($status);
+    }
 }
