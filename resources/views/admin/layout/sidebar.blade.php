@@ -89,7 +89,7 @@
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
-                    <ul class="nav nav-treeview ml-3">
+                     <ul class="nav nav-treeview ml-3">
                         <li class="nav-item">
                             <a href="{{ route('admin.updatevendordetails', 'personal') }}" class="nav-link">
                                 <p>User</p>
@@ -104,38 +104,32 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="javascript:void(0)" class="nav-link">
+                        <i class="fab fa-product-hunt mr-2"></i>
                         <p>
-                            Admin Management
-                            <i class="right fas fa-angle-left"></i>
+                            Catalogue Management
+                            <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
-                    <ul class="nav nav-treeview">
+                    <ul class="nav nav-treeview ml-3">
                         <li class="nav-item">
-                            <a href="pages/charts/chartjs.html" class="nav-link">
-                                <p>Admins</p>
+                            <a href="{{ route('admin.section-index') }}" class="nav-link">
+                                <p>Sections</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/charts/flot.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Flot</p>
+                            <a href="#" class="nav-link">
+                                <p>Categories</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/charts/inline.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Sub Admins</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/charts/uplot.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Vendor</p>
+                            <a href="#" class="nav-link">
+                                <p>Products</p>
                             </a>
                         </li>
                     </ul>
                 </li>
+
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-tree"></i>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Country;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Vendor;
@@ -207,7 +208,8 @@ class ProfileController extends Controller
                 return redirect()->route('admin.updatevendordetails', $slug);
             }
             $vendorData = Vendor::where('user_id', Auth::id())->first();
-            return view('admin.modules.vendor.vendor', compact('slug', 'vendorData'));
+            $countries = Country::where('status', 1)->get()->toArray();
+            return view('admin.modules.vendor.vendor', compact('slug', 'vendorData', 'countries'));
         } elseif ($slug == 'business') {
 
             if ($request->isMethod('POST')) {
@@ -257,7 +259,6 @@ class ProfileController extends Controller
                     // crop image upload
                     $data['address_proof_image'] = PhotoUploadController::orginalImageUpload($name, $path, $file);
                 }
-
                 $vendor = Vendor::where('user_id', Auth::id())->select('id')->first();
                 $data['vendor_id'] = $vendor->id;
                 $data['user_id'] = Auth::id();
@@ -273,8 +274,9 @@ class ProfileController extends Controller
                 return redirect()->route('admin.updatevendordetails', $slug);
             }
 
+            $countries = Country::where('status', 1)->get()->toArray();
             $vendorBusinessData = VendorBusinessDetail::where('user_id', Auth::id())->first();
-            return view('admin.modules.vendor.vendor', compact('slug', 'vendorBusinessData'));
+            return view('admin.modules.vendor.vendor', compact('slug', 'vendorBusinessData', 'countries'));
         } elseif ($slug == 'bank') {
 
             if ($request->isMethod('POST')) {

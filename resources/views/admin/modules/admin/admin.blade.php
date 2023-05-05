@@ -43,7 +43,10 @@
                                             </td>
                                             <td>
                                                 <div class="switch-item">
-                                                    <input type="checkbox" data-status="{{ $admin->status }}" name="status" data-id="{{ $admin->id }}" id="admin_{{ $admin->id }}" class="control switch_btn" {{ $admin->status == 1 ? 'checked' : ' ' }} >
+                                                    <input type="checkbox" data-status="{{ $admin->status }}" name="status"
+                                                        data-id="{{ $admin->id }}" id="admin_{{ $admin->id }}"
+                                                        class="control switch_btn"
+                                                        {{ $admin->status == 1 ? 'checked' : ' ' }}>
                                                 </div>
                                             </td>
                                             <td>
@@ -125,8 +128,8 @@
                 if (admin_status == 1) {
                     $(this).attr('data-status', 0);
                     admin_status = 0;
-                }else{
-                   $(this).attr('data-status', 1);
+                } else {
+                    $(this).attr('data-status', 1);
                     admin_status = 1;
                 }
 
@@ -153,7 +156,7 @@
                                 icon: 'success',
                                 title: 'User Approved Successfully',
                             })
-                        }else{
+                        } else {
                             const Toast = Swal.mixin({
                                 toast: true,
                                 position: 'top-end',

@@ -71,8 +71,14 @@
                                 </div>
 
                                 <div class="form-group">
-                                    {!! Form::label('country', 'Country') !!}
-                                    {!! Form::text('country', $vendorData?->country, ['class' => 'form-control', 'placeholder' => 'Enter Country']) !!}
+                                    <label for="country">Country</label>
+
+                                    <select name="country" id="country" class="form-control">
+                                        <option>Select Country</option>
+                                        @foreach ($countries as $country)
+                                            <option {{ $country['id'] == $vendorData?->country ? 'selected' : ' ' }} value="{{ $country['id'] }}">{{ $country['name'] }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
 
                                 <div class="form-group">
@@ -140,7 +146,7 @@
                                     </div>
                                 @endif
 
-                                {!! Form::model($vendorBusinessData, ['route' => ['admin.updatevendordetails', $slug], 'files' => true ]) !!}
+                                {!! Form::model($vendorBusinessData, ['route' => ['admin.updatevendordetails', $slug], 'files' => true]) !!}
 
                                 <div class="form-group">
                                     {!! Form::label('shop_name', 'Shop Name') !!}
@@ -175,11 +181,14 @@
                                 </div>
 
                                 <div class="form-group">
-                                    {!! Form::label('shop_country', 'Shop Country') !!}
-                                    {!! Form::text('shop_country', $vendorBusinessData?->shop_country, [
-                                        'class' => 'form-control',
-                                        'placeholder' => 'Enter Shop Country',
-                                    ]) !!}
+                                    <label for="shop_country">Shop Country</label>
+
+                                    <select name="shop_country" id="shop_country" class="form-control">
+                                        <option>Select Country</option>
+                                        @foreach ($countries as $country)
+                                            <option {{ $country['id'] == $vendorBusinessData?->shop_country ? 'selected' : ' ' }} value="{{ $country['id'] }}">{{ $country['name'] }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
 
                                 <div class="form-group">
@@ -217,14 +226,26 @@
 
                                 <div class="form-group">
                                     {!! Form::label('address_proof', 'Address Proof') !!}
-                                    {!! Form::select('address_proof', ['passport' => 'Passport', 'votingcard' => 'Voting Card', 'pan' => 'PAN', 'drivinglicene' => 'Driving Licene', 'adharcard' => 'Adhar Card'], $vendorBusinessData?->address_proof, ['placeholder' => 'Select Proof Type', 'class' => 'form-control'] ) !!}
+                                    {!! Form::select(
+                                        'address_proof',
+                                        [
+                                            'passport' => 'Passport',
+                                            'votingcard' => 'Voting Card',
+                                            'pan' => 'PAN',
+                                            'drivinglicene' => 'Driving Licene',
+                                            'adharcard' => 'Adhar Card',
+                                        ],
+                                        $vendorBusinessData?->address_proof,
+                                        ['placeholder' => 'Select Proof Type', 'class' => 'form-control'],
+                                    ) !!}
                                 </div>
 
                                 <div class="form-group">
                                     <label for="image_input">Address Proof Image</label>
                                     <div class="input-group mb-2">
                                         <div class="custom-file">
-                                            <input type="file" name="address_proof_image" class="custom-file-input" id="image_input">
+                                            <input type="file" name="address_proof_image" class="custom-file-input"
+                                                id="image_input">
                                             <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                                         </div>
                                         <div class="input-group-append">
@@ -233,8 +254,10 @@
                                     </div>
                                     <img class="prifile-img mt-4 imgw-200" id="image_preview">
                                     @if (!empty($vendorBusinessData?->address_proof_image))
-                                        <input type="hidden" name="old_image" value="{{ $vendorBusinessData?->address_proof_image }}">
-                                        <img width="400px" src="{{ asset('image/vendor/' . $vendorBusinessData?->address_proof_image) }}"
+                                        <input type="hidden" name="old_image"
+                                            value="{{ $vendorBusinessData?->address_proof_image }}">
+                                        <img width="400px"
+                                            src="{{ asset('image/vendor/' . $vendorBusinessData?->address_proof_image) }}"
                                             alt="{{ $vendorBusinessData?->address_proof_image }}">
                                     @endif
                                 </div>
@@ -273,80 +296,80 @@
                     </div>
                 </div>
             @elseif ($slug == 'bank')
-            <div class="row justify-content-center">
-                <div class="col-xl-8">
-                    <div class="card card-secondary">
-                        <div class="card-header">
-                            <h3 class="card-title">Update Bank Details</h3>
-                        </div>
-                        <div class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-xl-8">
+                        <div class="card card-secondary">
+                            <div class="card-header">
+                                <h3 class="card-title">Update Bank Details</h3>
+                            </div>
+                            <div class="card-body">
 
-                            @if ($errors->any())
-                                <div class="error-msg alert alert-danger alert-dismissible fade show" role="alert">
-                                    <ul class="mb-0">
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                                @if ($errors->any())
+                                    <div class="error-msg alert alert-danger alert-dismissible fade show" role="alert">
+                                        <ul class="mb-0">
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+
+                                @if (Session::has('msg'))
+                                    <div class="alert alert-{{ Session::get('cls') }} alert-dismissible fade show"
+                                        role="alert">
+                                        {{ Session::get('msg') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+
+                                {!! Form::model($vendorBankData, ['route' => ['admin.updatevendordetails', $slug]]) !!}
+
+                                <div class="form-group">
+                                    {!! Form::label('account_holder_name', 'Account Holder Name') !!}
+                                    {!! Form::text('account_holder_name', $vendorBankData?->account_holder_name, [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Enter account holder name',
+                                    ]) !!}
                                 </div>
-                            @endif
 
-                            @if (Session::has('msg'))
-                                <div class="alert alert-{{ Session::get('cls') }} alert-dismissible fade show"
-                                    role="alert">
-                                    {{ Session::get('msg') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                                <div class="form-group">
+                                    {!! Form::label('bank_name', 'Bank Name') !!}
+                                    {!! Form::text('bank_name', $vendorBankData?->bank_name, [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Enter bank name',
+                                    ]) !!}
                                 </div>
-                            @endif
 
-                            {!! Form::model($vendorBankData, ['route' => ['admin.updatevendordetails', $slug] ]) !!}
+                                <div class="form-group">
+                                    {!! Form::label('account_number', 'Account Number') !!}
+                                    {!! Form::text('account_number', $vendorBankData?->account_number, [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Enter account number',
+                                    ]) !!}
+                                </div>
 
-                            <div class="form-group">
-                                {!! Form::label('account_holder_name', 'Account Holder Name') !!}
-                                {!! Form::text('account_holder_name', $vendorBankData?->account_holder_name, [
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Enter account holder name',
-                                ]) !!}
+                                <div class="form-group">
+                                    {!! Form::label('bank_ifsc_code', 'Bank Ifsc Code') !!}
+                                    {!! Form::text('bank_ifsc_code', $vendorBankData?->bank_ifsc_code, [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Enter bank ifsc code',
+                                    ]) !!}
+                                </div>
+
+                                <div class="form-group">
+                                    {!! Form::button('Update Data', ['type' => 'submit', 'class' => 'btn btn-primary mt-2']) !!}
+                                </div>
+
+                                {!! Form::close() !!}
                             </div>
-
-                            <div class="form-group">
-                                {!! Form::label('bank_name', 'Bank Name') !!}
-                                {!! Form::text('bank_name', $vendorBankData?->bank_name, [
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Enter bank name',
-                                ]) !!}
-                            </div>
-
-                            <div class="form-group">
-                                {!! Form::label('account_number', 'Account Number') !!}
-                                {!! Form::text('account_number', $vendorBankData?->account_number, [
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Enter account number',
-                                ]) !!}
-                            </div>
-
-                            <div class="form-group">
-                                {!! Form::label('bank_ifsc_code', 'Bank Ifsc Code') !!}
-                                {!! Form::text('bank_ifsc_code', $vendorBankData?->bank_ifsc_code, [
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Enter bank ifsc code',
-                                ]) !!}
-                            </div>
-
-                            <div class="form-group">
-                                {!! Form::button('Update Data', ['type' => 'submit', 'class' => 'btn btn-primary mt-2']) !!}
-                            </div>
-
-                            {!! Form::close() !!}
                         </div>
                     </div>
                 </div>
-            </div>
             @endif
         </div>
     </section>

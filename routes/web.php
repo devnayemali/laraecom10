@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\SectionController;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +45,12 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     Route::get('/admin-view/{id}', [AdminController::class, 'admin_view'])->name('admin.admin-view');
     Route::post('/admin-status/{id}', [AdminController::class, 'admin_status'])->name('admin.admin-status');
 
+    Route::get('/section', [SectionController::class, 'index'])->name('admin.section-index');
+    Route::get('/section/create', [SectionController::class, 'create'])->name('admin.section-create');
+    Route::post('/section', [SectionController::class, 'store'])->name('admin.section-store');
+    Route::post('/section/update', [SectionController::class, 'update'])->name('admin.section-update');
+    Route::post('/section-status/{id}', [SectionController::class, 'section_status'])->name('admin.section-status');
+    Route::delete('/section-delete/{id}', [SectionController::class, 'destroy'])->name('admin.section-destroy');
 
 });
 require __DIR__ . '/auth.php';
