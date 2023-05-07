@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SectionController;
 use Illuminate\Routing\Controllers\Middleware;
@@ -51,6 +52,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     Route::post('/section/update', [SectionController::class, 'update'])->name('admin.section-update');
     Route::post('/section-status/{id}', [SectionController::class, 'section_status'])->name('admin.section-status');
     Route::delete('/section-delete/{id}', [SectionController::class, 'destroy'])->name('admin.section-destroy');
+
+    // Category
+    Route::get('/category', [CategoryController::class, 'index'])->name('admin.category-index');
+    Route::get('/category/create', [CategoryController::class, 'create'])->name('admin.category-create');
+    Route::post('/category', [CategoryController::class, 'store'])->name('admin.category-store');
 
 });
 require __DIR__ . '/auth.php';

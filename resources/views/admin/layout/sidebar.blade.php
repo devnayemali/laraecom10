@@ -118,7 +118,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.category-index') }}" class="nav-link">
                                 <p>Categories</p>
                             </a>
                         </li>

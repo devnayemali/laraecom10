@@ -1,7 +1,7 @@
 @extends('admin.layout.layout')
 
-@section('page_title', 'Section List')
-@section('sub_title', 'Section List')
+@section('page_title', 'Category List')
+@section('sub_title', 'Category List')
 
 @section('content')
     <section class="content">
@@ -10,11 +10,11 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Section List Table</h3>
+                            <h3 class="card-title">Category List Table</h3>
                             <div class="card-tools">
                                 <div class="input-group input-group-sm">
                                     <button type="button" class="btn btn-primary add-modal-btn">
-                                        Add Section
+                                        Add New Category
                                     </button>
                                 </div>
                             </div>
@@ -31,34 +31,34 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($sections as $section)
+                                    @foreach ($categories as $category)
                                         <tr>
-                                            <td>{{ $section->id }}</td>
-                                            <td>{{ $section->name }}</td>
+                                            <td>{{ $category->id }}</td>
+                                            <td>{{ $category->category_name }}</td>
                                             <td>
                                                 <div class="switch-item">
-                                                    <input type="checkbox" data-status="{{ $section->status }}"
-                                                        name="status" data-id="{{ $section->id }}"
-                                                        id="section_{{ $section->id }}" class="control switch_btn"
-                                                        {{ $section->status == 1 ? 'checked' : ' ' }}>
+                                                    <input type="checkbox" data-status="{{ $category->status }}"
+                                                        name="status" data-id="{{ $category->id }}"
+                                                        id="category_{{ $category->id }}" class="control switch_btn"
+                                                        {{ $category->status == 1 ? 'checked' : ' ' }}>
                                                 </div>
                                             </td>
                                             <td>
                                                 <p class="mb-0">Created :
-                                                    {{ $section->created_at->toDayDateTimeString() }}
+                                                    {{ $category->created_at->toDayDateTimeString() }}
                                                 </p>
                                                 <p class="mb-0">Updated :
-                                                    {!! $section->updated_at == $section->created_at
+                                                    {!! $category->updated_at == $category->created_at
                                                         ? '<span class="text-warning">Not Updated Yet</span>'
-                                                        : $section->updated_at->toDayDateTimeString() !!}
+                                                        : $category->updated_at->toDayDateTimeString() !!}
                                                 </p>
                                             </td>
 
                                             <td>
-                                                <button data-name="{{ $section->name }}" data-id={{ $section->id }}
+                                                <button data-category-name="{{ $category->name }}" data-id={{ $category->id }}
                                                     class="btn btn-warning edit-modal-btn border-0"><i
                                                         class="fas fa-edit"></i></button>
-                                                <button data-id={{ $section->id }}
+                                                <button data-id={{ $category->id }}
                                                     class="btn btn-danger border-0 delete-btn"><i
                                                         class="fas fa-trash"></i></button>
                                             </td>
@@ -72,70 +72,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Add Modal Start -->
-    <div class="modal fade" id="add-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Section Name</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('admin.section-store') }}" method="POST">
-                        @csrf
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="name" name="name" class="form-control" required id="name"
-                                placeholder="Name">
-                        </div>
-                        <div class="form-group">
-                            <label for="name">Select Status</label>
-                            <select name="status" class="form-control" id="status">
-                                <option value="1">Active</option>
-                                <option value="0">Inactive</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary mt-2">Add Section</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Add Modal End -->
-
-    <!-- Update Modal Start -->
-    <div class="modal fade" id="edit-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit Section Name</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('admin.section-update') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="id" id="section_id">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" value="" class="form-control" required
-                                id="update_name" placeholder="Name">
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary mt-2">Update Section</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Update Modal End -->
 
     @if (session('msg'))
         @push('js')
